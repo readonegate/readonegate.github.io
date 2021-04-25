@@ -9,8 +9,7 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
-  <!-- Favicons -->
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
 
   <!-- Google Fonts -->
   <link
@@ -368,39 +367,37 @@
           </div>
 
           <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="name">Your Name</label>
-                  <input type="text" name="name" class="form-control" id="name" data-rule="minlen:4"
-                    data-msg="Please enter at least 4 chars" />
-                  <div class="validate"></div>
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="name">Your Email</label>
-                  <input type="email" class="form-control" name="email" id="email" data-rule="email"
-                    data-msg="Please enter a valid email" />
-                  <div class="validate"></div>
+
+            <form name="Contact-Form" class="php-email-form">
+              <div class="col-md-12">
+                <div class="alert alert-success my-alert d-none" role="alert">
+                  Success! we have received your message ..
                 </div>
               </div>
               <div class="form-group">
-                <label for="name">Subject</label>
-                <input type="text" class="form-control" name="subject" id="subject" data-rule="minlen:4"
-                  data-msg="Please enter at least 8 chars of subject" />
-                <div class="validate"></div>
+                <label for="name">Your Name</label>
+                <input type="text" name="nama" class="form-control" id="name" data-rule="minlen:4"
+                  data-msg="Please enter at least 4 chars" />
+
+              </div>
+              <div class="form-group">
+                <label for="name">Your Email</label>
+                <input type="email" class="form-control" name="email" id="email" data-rule="email"
+                  data-msg="Please enter a valid email" />
               </div>
               <div class="form-group">
                 <label for="name">Message</label>
-                <textarea class="form-control" name="message" rows="10" data-rule="required"
+                <textarea class="form-control" name="pesan" rows="10" data-rule="required"
                   data-msg="Please write something for us"></textarea>
-                <div class="validate"></div>
+
               </div>
-              <div class="mb-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
+              <div class="text-center">
+                <button class="btn btn-primary btn-sent" type="submit">Send Message</button>
+                <button class="btn btn-primary btn-loading d-none" type="button" disabled>
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span class="visually-hidden">Loading...</span>
+                </button>
               </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
             </form>
           </div>
 
@@ -422,6 +419,7 @@
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
+
   <!-- Vendor JS Files -->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -434,6 +432,41 @@
   <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
   <script src="assets/vendor/typed.js/typed.min.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
+
+  <!-- contact form -->
+  <script>
+    const scriptURL =
+      'https://script.google.com/macros/s/AKfycbxQf1E7ZttSparO2NoQGasDvJiglW1VreneYLXG4w5wIDHe2vvxxrA6QQo6N_ipWhym/exec'
+    const form = document.forms['Contact-Form'];
+    const btnSent = document.querySelector('.btn-sent');
+    const btnLoading = document.querySelector('.btn-loading');
+    const myAlert = document.querySelector('.my-alert')
+
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+
+      btnSent.classList.toggle('d-none');
+      btnLoading.classList.toggle('d-none');
+
+      fetch(scriptURL, {
+          method: 'POST',
+          body: new FormData(form)
+        })
+        .then(response => {
+          // menampilkan dan menonaktivkan btn loading & sent
+          btnSent.classList.toggle('d-none');
+          btnLoading.classList.toggle('d-none');
+
+          // menampilkan alert
+          myAlert.classList.toggle('d-none');
+
+          // reset form
+          form.reset();
+          console.log('Success!', response)
+        })
+        .catch(error => console.error('Error!', error.message))
+    })
+  </script>
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
